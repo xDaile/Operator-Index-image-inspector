@@ -5,9 +5,9 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup and launc](#setup-and-launch)
-* [Example of use](#Example of use)
+* [Example of use](#example-of-use)
 * [Project status](#project-status)
-* [Authors] (#authors)
+* [Authors](#authors)
 
 ### General info
 This project will do...
