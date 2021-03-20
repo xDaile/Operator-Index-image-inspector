@@ -4,9 +4,9 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-* [Setup](#setup)
-* [Example of use] (#example-of-use)
-* [Project status] (#project-status)
+* [Setup and launc](#setup-and-launch)
+* [Example of use] (##example-of-use)
+* [Project status] (##project-status)
 * [Authors] (#authors)
 
 ### General info
