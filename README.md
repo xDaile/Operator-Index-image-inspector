@@ -1,4 +1,4 @@
-#Operator index image inspector
+# Operator index image inspector
 
 
 ## Table of contents
@@ -9,23 +9,23 @@
 * [Project status] (#project-status)
 * [Authors] (#authors)
 
-###General info
+### General info
 This project will do...
 
 
-###Technologies
+### Technologies
 This project uses...
 
-###Setup and launch
+### Setup and launch
 You can setup and launch this project as follows...
 
-####Example of use
+#### Example of use
 some example will appear here
 * Example 1
 
-###Project status
+#### Project status
 Project is not completed yet.
 
-####Authors:
+#### Authors:
 Michal Zelenák
 
