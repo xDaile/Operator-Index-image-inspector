@@ -1,13 +1,23 @@
 #Operator index image inspector
 
-###Introduction
+
+## Table of contents
+* [General info](#general-info)
+* [Technologies](#technologies)
+* [Setup](#setup)
+* [Example of use] (#example-of-use)
+* [Project status] (#project-status)
+* [Authors] (#authors)
+
+###General info
 This project will do...
+
 
 ###Technologies
 This project uses...
 
-###Launch
-You can launch this project as follows...
+###Setup and launch
+You can setup and launch this project as follows...
 
 ####Example of use
 some example will appear here
