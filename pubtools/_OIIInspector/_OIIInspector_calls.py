@@ -10,8 +10,8 @@ COMMON_ARGS={
 }
 
 BUNDLE_IMAGE_ARGS=COMMON_ARGS.copy()
-BUNDLE_IMAGE_ARGS[("--url",)]={
-    "help": "url with address of the bundle image",
+BUNDLE_IMAGE_ARGS[("--name",)]={
+    "help": "name of the bundle image",
     "required":True,
     "type": str,
 }
@@ -22,9 +22,11 @@ def get_bundle_images_list_main(sysargs=None):
     Returns:
         dict: Metadata of the repository.
     """
-    parser = setup_arg_parser(COMMON_ARGS)
+    parser = setup_arg_parser(None)
 
     if sysargs:
         args = parser.parse_args(sysargs[1:])
     else:
         args = parser.parse_args()  # pragma: no cover"
+
+
