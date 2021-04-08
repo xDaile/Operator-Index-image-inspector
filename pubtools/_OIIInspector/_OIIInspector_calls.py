@@ -45,6 +45,13 @@ def get_index_image_operators_list_main(sysargs=None):
 
     return NotImplementedError    
 
+def get_bundle_images_list_main(sysargs=None):
+        """
+    Entrypoint for getting list of available images.
+    Returns:
+        dict: Metadata of the repository.
+    """
 
+    return NotImplementedError  
 
 
