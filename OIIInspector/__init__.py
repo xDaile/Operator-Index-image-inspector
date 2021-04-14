@@ -1,1 +1,1 @@
-"""pubtools_OperatorIndexImageInspector."""
+"""OperatorIndexImageInspector."""
