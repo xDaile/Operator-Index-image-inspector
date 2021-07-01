@@ -1,9 +1,7 @@
 import json
-import tempfile
-
-from OIIInspector.OIIIClient import OIIIClient
-from utils import setup_arg_parser
 import sys
+from utils import setup_arg_parser
+from OIIInspector.OIIIClient import OIIIClient
 
 GET_INDEX_IMAGE_PACKAGES_LIST_ARGS = {("--address",): {
     "help": "Address of the index image",
@@ -12,7 +10,7 @@ GET_INDEX_IMAGE_PACKAGES_LIST_ARGS = {("--address",): {
 }}
 
 
-def setup_oiii_client(args, file_name):
+def setup_oiii_client(args):
     return OIIIClient()
 
 
@@ -29,13 +27,10 @@ def get_index_image_packages_list_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    with tempfile.NamedTemporaryFile() as tmpfile:
-        oiii_client = setup_oiii_client(args, tmpfile.name)
-        resp = oiii_client.get_index_image_package_list(args.address, int)
-
-        json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
-
-        return resp
+    oiii_client = setup_oiii_client(args)
+    resp = oiii_client.get_index_image_package_list(args.address)
+    json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
+    return resp
 
 
 get_index_image_packages_list_main(sys.argv)
