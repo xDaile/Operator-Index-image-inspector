@@ -3,11 +3,13 @@ import sys
 from utils import setup_arg_parser
 from OIIInspector.OIIIClient import OIIIClient
 
-GET_INDEX_IMAGE_PACKAGES_LIST_ARGS = {("--address",): {
+ADDRESS_ARGS = {("--address",): {
     "help": "Address of the index image",
     "required": True,
     "type": str,
 }}
+
+GET_INDEX_IMAGE_PACKAGES_LIST_ARGS = ADDRESS_ARGS.copy()
 
 
 def setup_oiii_client(args):
