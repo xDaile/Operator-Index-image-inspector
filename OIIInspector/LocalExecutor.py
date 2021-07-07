@@ -46,5 +46,5 @@ class LocalExecutor(object):
         if p.returncode != 0 and not tolerate_err:
             LOG.error("Command {0} failed with {1}".format(cmd, err))
             raise RuntimeError(err_msg)
-
-        return out.decode('UTF-8'), err
+            return
+        return out.decode('UTF-8')
