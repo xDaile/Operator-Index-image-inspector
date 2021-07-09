@@ -1,19 +1,22 @@
 import json
-import tempfile
-
-from OIIInspector.OIIIClient import OIIIClient
-from utils import setup_arg_parser
 import sys
+from utils import setup_arg_parser
+from OIIInspector.OIIIClient import OIIIClient
 
-GET_INDEX_IMAGE_PACKAGES_LIST_ARGS = {("--address",): {
+ADDRESS_ARGS = {("--address",): {
     "help": "Address of the index image",
     "required": True,
     "type": str,
 }}
 
+GET_INDEX_IMAGE_PACKAGES_LIST_ARGS = ADDRESS_ARGS.copy()
 
-def setup_oiii_client(args, file_name):
-    return OIIIClient()
+GET_BUNDLE_ARGS = ADDRESS_ARGS.copy()
+GET_BUNDLE_FOR_CHANNEL_ARGS = ADDRESS_ARGS.copy()
+GET_BUNDLE_THAT_REPLACES_ARGS = ADDRESS_ARGS.copy()
+GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS = ADDRESS_ARGS.copy()
+GET_PACKAGE_ARGS = ADDRESS_ARGS.copy()
+LIST_PACKAGES_ARGS = ADDRESS_ARGS.copy()
 
 
 def get_index_image_packages_list_main(sysargs=None):
@@ -29,13 +32,45 @@ def get_index_image_packages_list_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    with tempfile.NamedTemporaryFile() as tmpfile:
-        oiii_client = setup_oiii_client(args, tmpfile.name)
-        resp = oiii_client.get_index_image_package_list(args.address, int)
-
-        json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
-
-        return resp
+    oiii_client = OIIIClient()
+    resp = oiii_client.get_index_image_package_list(args.address)
+    json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
+    return resp
 
 
-get_index_image_packages_list_main(sys.argv)
+def get_bundle_main(sysargs=None):
+    """
+    Entrypoint for getting bundle metadata.
+    Returns:
+        dict: Bundle image in the index image.
+    """
+    parser = setup_arg_parser(GET_INDEX_IMAGE_PACKAGES_LIST_ARGS)
+
+    if sysargs:
+        args = parser.parse_args(sysargs[1:])
+    else:
+        args = parser.parse_args()  # pragma: no cover"
+
+    oiii_client = OIIIClient()
+    resp = oiii_client.get_bundle(args.address)
+    json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
+    return resp
+
+
+def list_packages_main(sysargs=None):
+    """
+    Entrypoint for getting list of packages in index image.
+    Returns:
+        dict: List of packages in the index image.
+    """
+    parser = setup_arg_parser(GET_INDEX_IMAGE_PACKAGES_LIST_ARGS)
+
+    if sysargs:
+        args = parser.parse_args(sysargs[1:])
+    else:
+        args = parser.parse_args()  # pragma: no cover"
+
+    oiii_client = OIIIClient()
+    resp = oiii_client.list_packages(args.address)
+    json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
+    return resp
