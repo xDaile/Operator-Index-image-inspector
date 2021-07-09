@@ -19,10 +19,6 @@ GET_PACKAGE_ARGS = ADDRESS_ARGS.copy()
 LIST_PACKAGES_ARGS = ADDRESS_ARGS.copy()
 
 
-def setup_oiii_client(args):
-    return OIIIClient()
-
-
 def get_index_image_packages_list_main(sysargs=None):
     """
     Entrypoint for getting repository metadata.
@@ -36,7 +32,7 @@ def get_index_image_packages_list_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = setup_oiii_client(args)
+    oiii_client = OIIIClient()
     resp = oiii_client.get_index_image_package_list(args.address)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
@@ -55,7 +51,7 @@ def get_bundle_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = setup_oiii_client(args)
+    oiii_client = OIIIClient()
     resp = oiii_client.get_bundle(args.address)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
@@ -74,7 +70,7 @@ def list_packages_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = setup_oiii_client(args)
+    oiii_client = OIIIClient()
     resp = oiii_client.list_packages(args.address)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
