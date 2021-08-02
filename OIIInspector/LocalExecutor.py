@@ -25,5 +25,5 @@ def run_cmd(cmd, err_msg=None, tolerate_err=False):
 
     if p.returncode != 0 and not tolerate_err:
         LOG.error("Command {0} failed with {1}".format(cmd, err))
-        raise RuntimeError(err_msg)
-    return out.decode('UTF-8')
+        raise RuntimeError("API call was not successful")
+    return out.decode('utf-8')
