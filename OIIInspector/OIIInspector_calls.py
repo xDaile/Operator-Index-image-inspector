@@ -75,7 +75,7 @@ def get_index_image_packages_list_main(sysargs=None):
     """
     Entrypoint for getting repository metadata.
     Returns:
-        dict: List of packages in the index image.
+        JSON object with list of index image packages in the image.
     """
     parser = setup_arg_parser(GET_INDEX_IMAGE_PACKAGES_LIST_ARGS)
 
@@ -94,7 +94,7 @@ def get_bundle_main(sysargs=None):
     """
     Entrypoint for getting bundle metadata.
     Returns:
-        dict: Bundle image in the index image.
+        JSON object with data about specified bundle image.
     """
     parser = setup_arg_parser(GET_BUNDLE_ARGS)
 
@@ -113,7 +113,7 @@ def list_packages_main(sysargs=None):
     """
     Entrypoint for getting list of packages in index image.
     Returns:
-        dict: List of packages in the index image.
+        JSON object with list of packages in the image.
     """
     parser = setup_arg_parser(LIST_PACKAGES_ARGS)
 
@@ -130,9 +130,9 @@ def list_packages_main(sysargs=None):
 
 def list_bundles_main(sysargs=None):
     """
-    Entrypoint for getting list of bundles in index image.
+    Entrypoint for getting metainfo about bundles in the image.
     Returns:
-        dict: List of bundles in the index image.
+        JSON object with info about bundles in the image.
     """
     parser = setup_arg_parser(LIST_BUNDLES_ARGS)
 
@@ -151,7 +151,7 @@ def get_package_main(sysargs=None):
     """
     Entrypoint for getting metadata about package.
     Returns:
-        dict: JSON-like object with metadata about package.
+        JSON object with metadata about package.
     """
     parser = setup_arg_parser(GET_PACKAGE_ARGS)
 
@@ -168,9 +168,9 @@ def get_package_main(sysargs=None):
 
 def get_bundle_for_channel_main(sysargs=None):
     """
-    Entrypoint for getting metadata about bundle image in channel.
+    Entrypoint for getting metadata about bundle image for desired channel.
     Returns:
-        dict: JSON-like object with metadata about bundle.
+        JSON object with metadata about bundle.
     """
     parser = setup_arg_parser(GET_BUNDLE_FOR_CHANNEL_ARGS)
 
@@ -187,9 +187,9 @@ def get_bundle_for_channel_main(sysargs=None):
 
 def get_bundle_that_replaces_main(sysargs=None):
     """
-    Entrypoint for getting metadata about image that replaces old image.
+    Entrypoint for getting metadata about bundle image that replaces specified image.
     Returns:
-        dict: JSON-like object with metadata about image.
+        JSON object with metadata about image.
     """
     parser = setup_arg_parser(GET_BUNDLE_THAT_REPLACES_ARGS)
 
@@ -206,8 +206,10 @@ def get_bundle_that_replaces_main(sysargs=None):
 
 def get_default_bundle_that_provides_main(sysargs=None):
     """
-    Entrypoint for getting metadata about image that provides desired image with image defined by group, version,
-    kind and plural. Returns: dict: JSON-like object with metadata about bundle image.
+    Entrypoint for getting metadata about image that provides image defined by group, version,
+    kind and plural.
+    Returns:
+        JSON object with metadata about bundle image.
     """
     parser = setup_arg_parser(GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS)
 
@@ -223,11 +225,11 @@ def get_default_bundle_that_provides_main(sysargs=None):
     return resp
 
 
-get_index_image_packages_list_main(sys.argv)
-# list_packages_main(sys.argv)
-# list_bundles_main(sys.argv)
+#get_index_image_packages_list_main(sys.argv)
+#list_packages_main(sys.argv)
+#list_bundles_main(sys.argv)
 # get_bundle_main(sys.argv)
 # get_default_bundle_that_provides_main(sys.argv)
-# get_package_main(sys.argv)
+#get_package_main(sys.argv)
 # get_bundle_for_channel_main(sys.argv)
-# get_bundle_that_replaces_main(sys.argv)
+get_bundle_that_replaces_main(sys.argv)
