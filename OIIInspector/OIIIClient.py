@@ -8,7 +8,6 @@ class OIIIClient:
     def __init__(self):
         self.terminal_command = 'grpcurl -plaintext {call_argument} {image_address} {api_address}'
 
-    # What does this call really returns? (some addresses)
     def get_index_image_packages_list(self, image_address):
         command_to_call = self.terminal_command.format(
                             call_argument="",
