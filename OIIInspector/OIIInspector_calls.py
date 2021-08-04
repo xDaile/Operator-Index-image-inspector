@@ -71,11 +71,11 @@ GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS[("--plural",)] = {
 }
 
 
-def get_index_image_packages_list_main(sysargs=None):
+def get_index_image_api_endpoints_list_main(sysargs=None):
     """
-    Entrypoint for getting repository metadata.
+    Entrypoint for getting API endpoints.
     Returns:
-        JSON object with list of index image packages in the image.
+        JSON object with list of API endpoints.
     """
     parser = setup_arg_parser(GET_INDEX_IMAGE_PACKAGES_LIST_ARGS)
 
@@ -85,7 +85,7 @@ def get_index_image_packages_list_main(sysargs=None):
         args = parser.parse_args()  # pragma: no cover"
 
     oiii_client = OIIIClient()
-    resp = oiii_client.get_index_image_packages_list(args.address)
+    resp = oiii_client.get_index_image_api_endpoints_list(args.address)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
@@ -225,11 +225,11 @@ def get_default_bundle_that_provides_main(sysargs=None):
     return resp
 
 
-#get_index_image_packages_list_main(sys.argv)
+get_index_image_packages_list_main(sys.argv)
 #list_packages_main(sys.argv)
 #list_bundles_main(sys.argv)
 # get_bundle_main(sys.argv)
 # get_default_bundle_that_provides_main(sys.argv)
 #get_package_main(sys.argv)
 # get_bundle_for_channel_main(sys.argv)
-get_bundle_that_replaces_main(sys.argv)
+#get_bundle_that_replaces_main(sys.argv)
