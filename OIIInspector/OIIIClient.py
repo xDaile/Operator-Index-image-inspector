@@ -7,7 +7,7 @@ class OIIIClient:
 
     terminal_command = 'grpcurl -plaintext {call_argument} {image_address} {api_address}'
 
-    def get_index_image_packages_list(self, image_address):
+    def get_index_image_api_endpoints_list(self, image_address):
         command_to_call = self.terminal_command.format(
                             call_argument="",
                             image_address=image_address,
