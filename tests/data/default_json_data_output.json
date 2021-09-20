@@ -1,0 +1,9 @@
+{
+    "channels": [
+        {
+            "csvName": "serverless-operator.v1.10.0",
+            "name": "4.6"
+        }
+    ],
+    "name": "serverless-operator"
+}
