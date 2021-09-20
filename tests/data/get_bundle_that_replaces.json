@@ -1,0 +1,39 @@
+{
+  "csvName": "test-operator.v1.3.0",
+  "packageName": "serverless-operator",
+  "channelName": "4.3",
+  "bundlePath": "registry.redhat.io/openshift-serverless-1/serverless-rhel8-operator-bundle-backfill@sha256:262beb6c4826ce26a43cafd2962ac058c6053606afeb64132e031188e6d7f929",
+  "providedApis": [
+    {
+      "group": "serving.knative.dev",
+      "version": "v1alpha1",
+      "kind": "KnativeServing",
+      "plural": "knativeservings"
+    }
+  ],
+  "requiredApis": [
+    {
+      "group": "maistra.io",
+      "version": "v1",
+      "kind": "ServiceMeshMemberRoll",
+      "plural": "servicemeshmemberrolls"
+    },
+    {
+      "group": "maistra.io",
+      "version": "v1",
+      "kind": "ServiceMeshControlPlane",
+      "plural": "servicemeshcontrolplanes"
+    }
+  ],
+  "version": "1.3.0",
+  "dependencies": [
+    {
+      "type": "olm.gvk",
+      "value": "{\"group\":\"maistra.io\",\"kind\":\"ServiceMeshMemberRoll\",\"version\":\"v1\"}"
+    },
+    {
+      "type": "olm.gvk",
+      "value": "{\"group\":\"maistra.io\",\"kind\":\"ServiceMeshControlPlane\",\"version\":\"v1\"}"
+    }
+  ]
+}
