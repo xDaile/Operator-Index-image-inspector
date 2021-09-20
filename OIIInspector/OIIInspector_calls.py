@@ -1,6 +1,6 @@
 import json
 import sys
-from utils import setup_arg_parser
+from OIIInspector.utils import setup_arg_parser
 from OIIInspector.OIIIClient import OIIIClient
 
 ADDRESS_ARG = {("--address",): {
@@ -71,25 +71,6 @@ GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS[("--plural",)] = {
 }
 
 
-def get_index_image_api_endpoints_list_main(sysargs=None):
-    """
-    Entrypoint for getting API endpoints.
-    Returns:
-        JSON object with list of API endpoints.
-    """
-    parser = setup_arg_parser(GET_INDEX_IMAGE_PACKAGES_LIST_ARGS)
-
-    if sysargs:
-        args = parser.parse_args(sysargs[1:])
-    else:
-        args = parser.parse_args()  # pragma: no cover"
-
-    oiii_client = OIIIClient()
-    resp = oiii_client.get_index_image_api_endpoints_list(args.address)
-    json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
-    return resp
-
-
 def get_bundle_main(sysargs=None):
     """
     Entrypoint for getting bundle metadata.
@@ -97,12 +78,10 @@ def get_bundle_main(sysargs=None):
         JSON object with data about specified bundle image.
     """
     parser = setup_arg_parser(GET_BUNDLE_ARGS)
-
     if sysargs:
         args = parser.parse_args(sysargs[1:])
     else:
         args = parser.parse_args()  # pragma: no cover"
-
     oiii_client = OIIIClient()
     resp = oiii_client.get_bundle(args.address, args.package_name, args.channel_name, args.csv_name)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
@@ -212,7 +191,6 @@ def get_default_bundle_that_provides_main(sysargs=None):
         JSON object with metadata about bundle image.
     """
     parser = setup_arg_parser(GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS)
-
     if sysargs:
         args = parser.parse_args(sysargs[1:])
     else:
@@ -224,12 +202,11 @@ def get_default_bundle_that_provides_main(sysargs=None):
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
-
-get_index_image_packages_list_main(sys.argv)
-#list_packages_main(sys.argv)
-#list_bundles_main(sys.argv)
+# get_index_image_api_endpoints_list_main(sys.argv)
+# list_packages_main(sys.argv)
+# list_bundles_main(sys.argv)
 # get_bundle_main(sys.argv)
 # get_default_bundle_that_provides_main(sys.argv)
-#get_package_main(sys.argv)
+# get_package_main(sys.argv)
 # get_bundle_for_channel_main(sys.argv)
-#get_bundle_that_replaces_main(sys.argv)
+# get_bundle_that_replaces_main(sys.argv)
