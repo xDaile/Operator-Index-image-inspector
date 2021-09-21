@@ -1,31 +1,35 @@
 import json.decoder
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 import pytest
+
 from OIIInspector.utils import run_cmd, convert_output, setup_arg_parser
 
 input_file_name = "./tests/data/{test_name}"
 CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT = 4
 CONVERT_OUTPUT_CSVJSON_OBJECTS_COUNT = 4
 CONVERT_OUTPUT_OBJECT_LIST_OBJECTS_COUNT = 9
+mock_process = MagicMock()
+mock_process.communicate.return_value = ["success".encode('utf-8'), 0]
 
 
-def test_run_cmd_pass(mocker):
-    mock_process = MagicMock()
-    mock_process.returncode = 0
-    mock_process.communicate.return_value = ["success".encode('utf-8'), 0]
-    mocker.patch('subprocess.Popen', return_value=mock_process)
+@patch("subprocess.Popen")
+def test_run_cmd_pass(mocked_popen):
+    mock_process.returncode=0
+    mocked_popen.return_value = mock_process
     output = run_cmd("ls")
     assert output == "success"
+    mocked_popen.assert_called_with(["ls"], stdout=-1)
 
 
-def test_run_cmd_fail(mocker):
-    mock_process = MagicMock()
+# during run, error occurs and returned value is 1
+@patch("subprocess.Popen")
+def test_run_cmd_fail(mocked_popen):
     mock_process.returncode = 1
-    mock_process.communicate.return_value = ["success".encode('utf-8'), "testErrorMessage"]
-    mocker.patch('subprocess.Popen', return_value=mock_process)
+    mocked_popen.return_value = mock_process
     with pytest.raises(RuntimeError):
         output = run_cmd("ls")
         assert output == "success"
+    mocked_popen.assert_called_with(["ls"], stdout=-1)
 
 
 def test_convert_output_combined():
