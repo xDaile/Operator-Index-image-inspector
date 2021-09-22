@@ -1,15 +1,9 @@
 import sys
 import pytest
 import mock
-
 from OIIInspector import OIIInspector_calls
 
 input_file_name = "./tests/data/{test_name}"
-
-
-def load_file(file_name):
-    test_file_name = input_file_name.format(test_name=file_name)
-    return open(test_file_name, "r").read()
 
 
 @mock.patch("OIIInspector.OIIIClient.OIIIClient.get_bundle", return_value="Client-response")
