@@ -1,8 +1,8 @@
 import json.decoder
 from unittest.mock import MagicMock, patch
 import pytest
-
 from OIIInspector.utils import run_cmd, convert_output, setup_arg_parser
+
 
 input_file_name = "./tests/data/{test_name}"
 CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT = 4
@@ -14,7 +14,7 @@ mock_process.communicate.return_value = ["success".encode('utf-8'), 0]
 
 @patch("subprocess.Popen")
 def test_run_cmd_pass(mocked_popen):
-    mock_process.returncode=0
+    mock_process.returncode = 0
     mocked_popen.return_value = mock_process
     output = run_cmd("ls")
     assert output == "success"
@@ -80,7 +80,7 @@ def load_and_convert_file(file_name):
     return convert_output(input_data)
 
 
-def test_argument_groups(capsys):
+def test_parser_arg_groups(capsys):
     args = {
         ("--arg1",): {
             "group": "Group 1",
@@ -104,8 +104,8 @@ def test_argument_groups(capsys):
             "group": "Group 2",
             "help": "Argument 4",
             "required": True,
-            "type": str,
-        },
+            "type": bool,
+        }
     }
 
     parser = setup_arg_parser(args)
@@ -114,3 +114,110 @@ def test_argument_groups(capsys):
 
     assert "Group 1:" in out
     assert "Group 2:" in out
+
+
+def test_parser_arg_required():
+    args = {
+        ("--arg2",): {
+            "group": "Group 1",
+            "help": "Argument 2",
+            "required": True,
+            "type": str,
+        }
+    }
+
+    parser = setup_arg_parser(args)
+    with pytest.raises(SystemExit):
+        parser.parse_args(['--arg2'])
+    with pytest.raises(SystemExit):
+        parser.parse_args([])
+
+
+def test_parser_arg_not_required():
+    args = {
+        ("--arg1",): {
+            "group": "Group 1",
+            "help": "Argument 1",
+            "required": False,
+            "type": str,
+        }
+    }
+
+    parser = setup_arg_parser(args)
+    parser.parse_args(['--arg1', 'True'])
+    parser.parse_args([])
+    with pytest.raises(SystemExit):
+        parser.parse_args(['--arg1'])
+
+
+def test_parser_help(capsys):
+    args = {
+        ("--arg1",): {
+            "group": "Group 1",
+            "help": "Argument 1",
+            "required": True,
+            "type": str,
+        },
+        ("--arg2",): {
+            "group": "Group 1",
+            "help": "Argument 2",
+            "required": True,
+            "type": str,
+        }
+    }
+
+    parser = setup_arg_parser(args)
+    parser.print_help()
+    out, _ = capsys.readouterr()
+    assert "Argument 1" in out
+    assert "Argument 2" in out
+    assert "usage:" in out
+
+
+def test_parser_type():
+    args = {
+        ("--arg1",): {
+            "group": "Group 1",
+            "help": "Argument 1",
+            "required": True,
+            "type": int,
+        }
+    }
+
+    parser = setup_arg_parser(args)
+    parser.parse_args(["--arg1", "-1502"])
+    with pytest.raises(SystemExit):
+        parser.parse_args(["--arg1", "s"])
+
+
+def test_parser_default():
+    args = {
+        ("--arg1",): {
+            "group": "Group 1",
+            "help": "Argument 1",
+            "required": False,
+            "type": int,
+            "default": "1",
+        }
+    }
+
+    parser = setup_arg_parser(args)
+    parser.parse_args(["--arg1", "-1502"])
+    parsed_args = parser.parse_args([])
+    print(parsed_args)
+    assert parsed_args.arg1 == 1
+
+
+def test_parser_action():
+    args = {
+        ("--arg1",): {
+            "group": "Group 1",
+            "help": "Argument 1",
+            "required": True,
+            "action": "store_true",
+        }
+    }
+
+    parser = setup_arg_parser(args)
+    parsed_args = parser.parse_args(["--arg1"])
+    assert parsed_args.arg1 is True
