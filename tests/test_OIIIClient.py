@@ -1,6 +1,5 @@
 import json
 from unittest.mock import patch
-
 import OIIInspector.OIIIClient as OIIIClient
 
 input_file_name = "./tests/data/{test_name}"
@@ -47,11 +46,15 @@ def test_list_packages(mock_run_cmd):
     mock_run_cmd.assert_called_once()
 
 
-# def test_list_bundles(unittest.TestCase):
-#     output = OIIIClient_object.list_bundles(OIIIClient_object, "localhost:50051")
-#     mock_run_cmd.assert_called_with("grpcurl -plaintext  localhost:50051 api.Registry/ListBundles")
-#     # assert output["csvName"] == "test-operator.v1.24"
-#     # assert output["csvJson"] == "web-terminal"
+@patch("OIIInspector.utils.run_cmd", return_value=load_file("list_bundles.json"))
+def test_list_bundles(mock_run_cmd):
+    output = OIIIClient_object.list_bundles("localhost:50051")
+    mock_run_cmd.assert_called_with("grpcurl -plaintext  localhost:50051 api.Registry/ListBundles")
+    assert output[0]["csvName"] == "test_csv_name 1"
+    assert output[0]["object"][2]["apiVersion"] == "test_api_version_0"
+    assert output[1]["csvName"] == "test_csv_name 2"
+    assert output[2]["csvName"] == "test_csv_name 3"
+
 
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_package.json"))
 def test_get_package(mock_run_cmd):
