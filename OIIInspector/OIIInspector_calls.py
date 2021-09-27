@@ -1,5 +1,6 @@
 import json
 import sys
+
 from OIIInspector.utils import setup_arg_parser
 from OIIInspector.OIIIClient import OIIIClient
 
@@ -201,12 +202,3 @@ def get_default_bundle_that_provides_main(sysargs=None):
                                                         args.kind, args.plural)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
-
-# get_index_image_api_endpoints_list_main(sys.argv)
-# list_packages_main(sys.argv)
-# list_bundles_main(sys.argv)
-# get_bundle_main(sys.argv)
-# get_default_bundle_that_provides_main(sys.argv)
-# get_package_main(sys.argv)
-# get_bundle_for_channel_main(sys.argv)
-# get_bundle_that_replaces_main(sys.argv)
