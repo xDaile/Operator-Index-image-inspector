@@ -1,20 +1,11 @@
-import OIIInspector.utils as utils
-
 import json
+
+import OIIInspector.utils as utils
 
 
 class OIIIClient:
 
     terminal_command = 'grpcurl -plaintext {call_argument} {image_address} {api_address}'
-
-    # def get_index_image_api_endpoints_list(self, image_address):
-    #     command_to_call = self.terminal_command.format(
-    #                         call_argument="",
-    #                         image_address=image_address,
-    #                         api_address="list")
-    #     out = utils.run_cmd(command_to_call)
-    #     list_of_index_images = out.split("\n")[0:-1]
-    #     return utils.convert_output(json.dumps(list_of_index_images))
 
     def get_bundle(self, image_address, pkg_name, channel_name, csv_name):
         call_argument = '-d \'{{\"pkgName\":\"{package_name}\",' \
@@ -23,12 +14,10 @@ class OIIIClient:
                             package_name=pkg_name,
                             channel_name=channel_name,
                             csv_name=csv_name)
-
         command_to_call = self.terminal_command.format(
                             call_argument=call_argument,
                             image_address=image_address,
                             api_address="api.Registry/GetBundle")
-
         out = utils.run_cmd(command_to_call)
         return utils.convert_output(out)
 
