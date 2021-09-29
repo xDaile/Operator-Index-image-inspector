@@ -1,13 +1,17 @@
 import json
 
 import OIIInspector.utils as utils
+import OIIInspector.ImageManager as ImageManager
 
-
+git
 class OIIIClient:
 
     terminal_command = 'grpcurl -plaintext {call_argument} {image_address} {api_address}'
+    image_manager = ImageManager.ImageManager()
 
     def get_bundle(self, image_address, pkg_name, channel_name, csv_name):
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         call_argument = '-d \'{{\"pkgName\":\"{package_name}\",' \
                         '\"channelName\":\"{channel_name}\",' \
                         '\"csvName\":\"{csv_name}\"}}\''.format(
@@ -16,15 +20,17 @@ class OIIIClient:
                             csv_name=csv_name)
         command_to_call = self.terminal_command.format(
                             call_argument=call_argument,
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/GetBundle")
         out = utils.run_cmd(command_to_call)
         return utils.convert_output(out)
 
     def list_packages(self, image_address):
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         command_to_call = self.terminal_command.format(
                             call_argument="",
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/ListPackages")
         out = utils.run_cmd(command_to_call)
         out = "{{\"data\":[ {result_api} ]}}".format(result_api=out)
@@ -34,9 +40,11 @@ class OIIIClient:
         return json_data
 
     def list_bundles(self, image_address):
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         command_to_call = self.terminal_command.format(
                             call_argument="",
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/ListBundles")
         out = utils.run_cmd(command_to_call)
         out = "{{\"data\":[ {result_api} ]}}".format(result_api=out)
@@ -48,9 +56,11 @@ class OIIIClient:
     def get_package(self, image_address, package_name):
         call_argument = '-d \'{{\"name\":\"{package_name}\"}}\''.format(
                             package_name=package_name)
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         command_to_call = self.terminal_command.format(
                             call_argument=call_argument,
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/GetPackage")
         out = utils.run_cmd(command_to_call)
         return utils.convert_output(out)
@@ -60,9 +70,11 @@ class OIIIClient:
                         '\"channelName\":\"{channel_name}\"}}\''.format(
                             package_name=package_name,
                             channel_name=channel_name)
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         command_to_call = self.terminal_command.format(
                             call_argument=call_argument,
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/GetBundleForChannel")
         out = utils.run_cmd(command_to_call)
         return utils.convert_output(out)
@@ -74,9 +86,11 @@ class OIIIClient:
                             package_name=package_name,
                             channel_name=channel_name,
                             csv_name=csv_name)
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         command_to_call = self.terminal_command.format(
                             call_argument=call_argument,
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/GetBundleThatReplaces")
         out = utils.run_cmd(command_to_call)
         return utils.convert_output(out)
@@ -90,9 +104,11 @@ class OIIIClient:
                             version=version,
                             kind=kind,
                             plural=plural)
+        self.image_manager.setup_image(image_address)
+        local_image_address = self.image_manager.get_local_address_of_image()
         command_to_call = self.terminal_command.format(
                             call_argument=call_argument,
-                            image_address=image_address,
+                            image_address=local_image_address,
                             api_address="api.Registry/GetDefaultBundleThatProvides")
         out = utils.run_cmd(command_to_call)
         return utils.convert_output(out)
