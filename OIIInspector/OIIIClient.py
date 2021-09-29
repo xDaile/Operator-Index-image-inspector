@@ -3,7 +3,6 @@ import json
 import OIIInspector.utils as utils
 import OIIInspector.ImageManager as ImageManager
 
-git
 class OIIIClient:
 
     terminal_command = 'grpcurl -plaintext {call_argument} {image_address} {api_address}'
