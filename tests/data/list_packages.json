@@ -1,0 +1,108 @@
+{
+  "name": "test-operator"
+}
+{
+  "name": "advanced-cluster-management"
+}
+{
+  "name": "amq-broker"
+}
+{
+  "name": "amq-broker-lts"
+}
+{
+  "name": "amq-broker-rhel8"
+}
+{
+  "name": "amq-online"
+}
+{
+  "name": "amq-streams"
+}
+{
+  "name": "amq7-interconnect-operator"
+}
+{
+  "name": "apicast-operator"
+}
+{
+  "name": "awx-resource-operator"
+}
+{
+  "name": "businessautomation-operator"
+}
+{
+  "name": "codeready-workspaces"
+}
+{
+  "name": "container-security-operator"
+}
+{
+  "name": "datagrid"
+}
+{
+  "name": "eap"
+}
+{
+  "name": "gatekeeper-operator-product"
+}
+{
+  "name": "jaeger-product"
+}
+{
+  "name": "jws-operator"
+}
+{
+  "name": "kiali-ossm"
+}
+{
+  "name": "klusterlet-product"
+}
+{
+  "name": "kubevirt-hyperconverged"
+}
+{
+  "name": "mtc-operator"
+}
+{
+  "name": "ocs-operator"
+}
+{
+  "name": "openshift-pipelines-operator-rh"
+}
+{
+  "name": "performance-addon-operator"
+}
+{
+  "name": "quay-bridge-operator"
+}
+{
+  "name": "quay-operator"
+}
+{
+  "name": "rh-service-binding-operator"
+}
+{
+  "name": "rhsso-operator"
+}
+{
+  "name": "serverless-operator"
+}
+{
+  "name": "service-registry-operator"
+}
+{
+  "name": "service-telemetry-operator"
+}
+{
+  "name": "servicemeshoperator"
+}
+{
+  "name": "smart-gateway-operator"
+}
+{
+  "name": "submariner"
+}
+{
+  "name": "web-terminal"
+}

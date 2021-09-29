@@ -1,0 +1,22 @@
+{
+  "name": "test-operator",
+  "channels": [
+    {
+      "name": "4.3",
+      "csvName": "serverless-operator.v1.7.2"
+    },
+    {
+      "name": "4.4",
+      "csvName": "serverless-operator.v1.7.2"
+    },
+    {
+      "name": "4.5",
+      "csvName": "serverless-operator.v1.10.2"
+    },
+    {
+      "name": "4.6",
+      "csvName": "test-operator.v1.10.0"
+    }
+  ],
+  "defaultChannelName": "4.5"
+}
