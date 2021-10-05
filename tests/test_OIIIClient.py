@@ -18,87 +18,115 @@ def test_command_building():
     assert formatted_command == "grpcurl -plaintext test_call_arg test_image_addr test_api_addr"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_bundle.json"))
-def test_get_bundle(mock_run_cmd):
-    output = OIIIClient_object.get_bundle("localhost:50051", "serverless-operator", "4.3",
+def test_get_bundle(mock_run_cmd, mock_image_manager):
+
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.get_bundle("test_address:50051", "serverless-operator", "4.3",
                                           "serverless-operator.v1.2.0")
+    check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d "
-                                    "\'{\"pkgName\":\"serverless-operator\","
-                                    "\"channelName\":\"4.3\","
-                                    "\"csvName\":\"serverless-operator.v1.2.0\"}\' "
-                                    "localhost:50051 "
-                                    "api.Registry/GetBundle")
+                                         "\'{\"pkgName\":\"serverless-operator\", "
+                                         "\"channelName\":\"4.3\", "
+                                         "\"csvName\":\"serverless-operator.v1.2.0\"}\' "
+                                         "test_address:50051 "
+                                         "api.Registry/GetBundle")
     assert output["version"] == "1.2.0"
     assert output["providedApis"][0]["plural"] == "test_plural"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("list_packages.json"))
-def test_list_packages(mock_run_cmd):
-    output = OIIIClient_object.list_packages("localhost:50051")
-    mock_run_cmd.assert_called_once_with("grpcurl -plaintext  "
-                                    "localhost:50051 "
-                                    "api.Registry/ListPackages")
+def test_list_packages(mock_run_cmd, mock_image_manager):
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.list_packages("test_address:50051")
+    check_image_manager_calls(mock_image_manager)
+    mock_run_cmd.assert_called_once_with("grpcurl -plaintext "
+                                         "test_address:50051 "
+                                         "api.Registry/ListPackages")
     assert output[0]["name"] == "test-operator"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("list_bundles.json"))
-def test_list_bundles(mock_run_cmd):
-    output = OIIIClient_object.list_bundles("localhost:50051")
-    mock_run_cmd.assert_called_once_with("grpcurl -plaintext  localhost:50051 api.Registry/ListBundles")
+def test_list_bundles(mock_run_cmd, mock_image_manager):
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.list_bundles("test_address:50051")
+    check_image_manager_calls(mock_image_manager)
+    mock_run_cmd.assert_called_once_with("grpcurl -plaintext test_address:50051 api.Registry/ListBundles")
     assert output[0]["csvName"] == "test_csv_name 1"
     assert output[0]["object"][2]["apiVersion"] == "test_api_version_0"
     assert output[1]["csvName"] == "test_csv_name 2"
     assert output[2]["csvName"] == "test_csv_name 3"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_package.json"))
-def test_get_package(mock_run_cmd):
-    output = OIIIClient_object.get_package("localhost:50051", "serverless-operator")
+def test_get_package(mock_run_cmd, mock_image_manager):
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.get_package("test_address:50051", "serverless-operator")
+    check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d "
-                                    "\'{\"name\":\"serverless-operator\"}\' "
-                                    "localhost:50051 "
-                                    "api.Registry/GetPackage")
+                                         "\'{\"name\":\"serverless-operator\"}\' "
+                                         "test_address:50051 "
+                                         "api.Registry/GetPackage")
     assert output["name"] == "test-operator"
     assert output["channels"][3]["csvName"] == "test-operator.v1.10.0"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_bundle_for_channel.json"))
-def test_get_bundle_for_channel(mock_run_cmd):
-    output = OIIIClient_object.get_bundle_for_channel("localhost:50051", "submariner", "alpha")
+def test_get_bundle_for_channel(mock_run_cmd, mock_image_manager):
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.get_bundle_for_channel("test_address:50051", "submariner", "alpha")
+    check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d "
-                                    "\'{\"pkgName\":\"submariner\", "
-                                    "\"channelName\":\"alpha\"}\' "
-                                    "localhost:50051 "
-                                    "api.Registry/GetBundleForChannel")
+                                         "\'{\"pkgName\":\"submariner\", "
+                                         "\"channelName\":\"alpha\"}\' "
+                                         "test_address:50051 "
+                                         "api.Registry/GetBundleForChannel")
     assert output["csvName"] == "test-name.v0.8.1"
     assert output["object"][8]["kind"] == "ClusterServiceVersion"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_bundle_that_replaces.json"))
-def test_get_bundle_that_replaces(mock_run_cmd):
-    output = OIIIClient_object.get_bundle_that_replaces("localhost:50051", "submariner", "alpha",
+def test_get_bundle_that_replaces(mock_run_cmd, mock_image_manager):
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.get_bundle_that_replaces("test_address:50051", "submariner", "alpha",
                                                         "beta")
+    check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d "
-                                    "\'{\"pkgName\":\"submariner\", "
-                                    "\"channelName\":\"alpha\","
-                                    "\"csvName\":\"beta\"}\' "
-                                    "localhost:50051 "
-                                    "api.Registry/GetBundleThatReplaces")
+                                         "\'{\"pkgName\":\"submariner\", "
+                                         "\"channelName\":\"alpha\","
+                                         "\"csvName\":\"beta\"}\' "
+                                         "test_address:50051 "
+                                         "api.Registry/GetBundleThatReplaces")
     assert output["csvName"] == "test-operator.v1.3.0"
     assert output["providedApis"][0]["plural"] == "test_plural"
 
 
+@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_default_bundle_that_provides.json"))
-def test_get_default_bundle_that_provides(mock_run_cmd):
-    output = OIIIClient_object.get_default_bundle_that_provides("localhost:50051", "testGroup",
+def test_get_default_bundle_that_provides(mock_run_cmd, mock_image_manager):
+    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    output = OIIIClient_object.get_default_bundle_that_provides("test_address:50051", "testGroup",
                                                                 "testVersion", "testKind", "testPlural")
+    check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d \'{"
-                                    "\"group\":\"testGroup\", "
-                                    "\"version\":\"testVersion\","
-                                    "\"kind\":\"testKind\","
-                                    "\"plural\":\"testPlural\"}\' "
-                                    "localhost:50051 "
-                                    "api.Registry/GetDefaultBundleThatProvides")
+                                         "\"group\":\"testGroup\", "
+                                         "\"version\":\"testVersion\","
+                                         "\"kind\":\"testKind\","
+                                         "\"plural\":\"testPlural\"}\' "
+                                         "test_address:50051 "
+                                         "api.Registry/GetDefaultBundleThatProvides")
     assert output["csvName"] == "test-operator.v8.2.0"
     assert output["providedApis"][4]["plural"] == "caches"
     assert output["object"][5]["kind"] == "CustomResourceDefinition"
+
+def check_image_manager_calls(mocked_image_manager):
+    mocked_image_manager.assert_called_once()
+    mocked_image_manager.return_value.start_image.assert_called_once_with("test_address:50051")
+    mocked_image_manager.return_value.get_local_address_of_image.assert_called_once()
+    mocked_image_manager.return_value.close_image_manager.assert_called_once()
