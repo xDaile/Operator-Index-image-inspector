@@ -59,7 +59,7 @@ def run_cmd(cmd, err_msg=None, tolerate_err=False):
     """
     log = logging.getLogger("OIIInspector")
     err_msg = err_msg or "An error has occurred when executing a command."
-    p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE)
+    p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
     if p.returncode != 0 and not tolerate_err:
         log.error("Command {0} failed with {1}".format(cmd, err))

@@ -25,7 +25,7 @@ def test_run_cmd_pass(mocked_popen):
     mocked_popen.return_value = mock_process
     output = run_cmd("ls")
     assert output == "success"
-    mocked_popen.assert_called_once_with(["ls"], stdout=-1)
+    mocked_popen.assert_called_once_with(["ls"], stdout=-1, stderr=-1)
 
 
 @patch("subprocess.Popen")
@@ -35,7 +35,7 @@ def test_run_cmd_fail(mocked_popen):
     with pytest.raises(RuntimeError):
         output = run_cmd("ls")
         assert output == "success"
-    mocked_popen.assert_called_once_with(["ls"], stdout=-1)
+    mocked_popen.assert_called_once_with(["ls"], stdout=-1, stderr=-1)
 
 
 def test_convert_output_combined():
