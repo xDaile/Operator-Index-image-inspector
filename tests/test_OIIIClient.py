@@ -18,11 +18,10 @@ def test_command_building():
     assert formatted_command == "grpcurl -plaintext test_call_arg test_image_addr test_api_addr"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_bundle.json"))
 def test_get_bundle(mock_run_cmd, mock_image_manager):
-
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.get_bundle("test_address:50051", "serverless-operator", "4.3",
                                           "serverless-operator.v1.2.0")
     check_image_manager_calls(mock_image_manager)
@@ -36,10 +35,10 @@ def test_get_bundle(mock_run_cmd, mock_image_manager):
     assert output["providedApis"][0]["plural"] == "test_plural"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("list_packages.json"))
 def test_list_packages(mock_run_cmd, mock_image_manager):
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.list_packages("test_address:50051")
     check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext "
@@ -48,10 +47,10 @@ def test_list_packages(mock_run_cmd, mock_image_manager):
     assert output[0]["name"] == "test-operator"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("list_bundles.json"))
 def test_list_bundles(mock_run_cmd, mock_image_manager):
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.list_bundles("test_address:50051")
     check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext test_address:50051 api.Registry/ListBundles")
@@ -61,10 +60,10 @@ def test_list_bundles(mock_run_cmd, mock_image_manager):
     assert output[2]["csvName"] == "test_csv_name 3"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_package.json"))
 def test_get_package(mock_run_cmd, mock_image_manager):
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.get_package("test_address:50051", "serverless-operator")
     check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d "
@@ -75,10 +74,10 @@ def test_get_package(mock_run_cmd, mock_image_manager):
     assert output["channels"][3]["csvName"] == "test-operator.v1.10.0"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_bundle_for_channel.json"))
 def test_get_bundle_for_channel(mock_run_cmd, mock_image_manager):
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.get_bundle_for_channel("test_address:50051", "submariner", "alpha")
     check_image_manager_calls(mock_image_manager)
     mock_run_cmd.assert_called_once_with("grpcurl -plaintext -d "
@@ -90,10 +89,10 @@ def test_get_bundle_for_channel(mock_run_cmd, mock_image_manager):
     assert output["object"][8]["kind"] == "ClusterServiceVersion"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_bundle_that_replaces.json"))
 def test_get_bundle_that_replaces(mock_run_cmd, mock_image_manager):
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.get_bundle_that_replaces("test_address:50051", "submariner", "alpha",
                                                         "beta")
     check_image_manager_calls(mock_image_manager)
@@ -107,10 +106,10 @@ def test_get_bundle_that_replaces(mock_run_cmd, mock_image_manager):
     assert output["providedApis"][0]["plural"] == "test_plural"
 
 
-@patch("OIIInspector.OIIIClient.ImageManager.ImageManager")
+@patch("OIIInspector.OIIIClient.OIIIClient.image_manager")
 @patch("OIIInspector.utils.run_cmd", return_value=load_file("get_default_bundle_that_provides.json"))
 def test_get_default_bundle_that_provides(mock_run_cmd, mock_image_manager):
-    mock_image_manager.return_value.get_local_address_of_image.return_value = "test_address:50051"
+    mock_image_manager.get_local_address_of_image.return_value = "test_address:50051"
     output = OIIIClient_object.get_default_bundle_that_provides("test_address:50051", "testGroup",
                                                                 "testVersion", "testKind", "testPlural")
     check_image_manager_calls(mock_image_manager)
@@ -126,7 +125,7 @@ def test_get_default_bundle_that_provides(mock_run_cmd, mock_image_manager):
     assert output["object"][5]["kind"] == "CustomResourceDefinition"
 
 def check_image_manager_calls(mocked_image_manager):
-    mocked_image_manager.assert_called_once()
-    mocked_image_manager.return_value.start_image.assert_called_once_with("test_address:50051")
-    mocked_image_manager.return_value.get_local_address_of_image.assert_called_once()
-    mocked_image_manager.return_value.close_image_manager.assert_called_once()
+    # mocked_image_manager.assert_called_once()
+    mocked_image_manager.start_image.assert_called_once_with("test_address:50051")
+    mocked_image_manager.get_local_address_of_image.assert_called_once()
+    mocked_image_manager.close_image_manager.assert_called_once()
