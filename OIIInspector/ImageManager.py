@@ -59,7 +59,7 @@ class ImageManager:
     def _stop_image_registry(self, tolerate_err=False):
         run_cmd(f"{self._container_platform} stop {self._base_container_name}_{self._port}", tolerate_err=tolerate_err)
 
-    def _remove_image_registry(self, tolerate_err):
+    def _remove_image_registry(self, tolerate_err=False):
         run_cmd(f"{self._container_platform} rm {self._base_container_name}_{self._port}", tolerate_err=tolerate_err)
 
     def _check_if_image_already_runs(self):
@@ -98,22 +98,21 @@ class ImageManager:
         log.error(err_msg)
         raise Exception(err_msg)
 
-
     @retry(exceptions=OIIInspectorError, tries=1, logger=log)
     def _serve_index_registry_at_port(self, port, max_tries, wait_time):
         """
         Start an image registry service at a specified port.
-        :param str db_path: path to index database containing the registry data.
         :param str int port: port to start the service on.
         :param max_tries: how many times to try to start the service before giving up.
         :param wait_time: time to wait before checking if the service is initialized.
         :return: object of the running Popen process.
         :rtype: Popen
-        :raises IIBError: if the process has failed to initialize too many times, or an unexpected
+        :raises OIIInspectorError: if the process has failed to initialize too many times, or an unexpected
         error occured.
         :raises AddressAlreadyInUse: if the specified port is already being used by another service.
         """
-        cmd = f"{self._container_platform} run --name={self._base_container_name}_{port} -p={port}:{port} {self._image_address}"
+        cmd = f"{self._container_platform} run --name={self._base_container_name}_{port} " \
+              f"-p={port}:{port} {self._image_address}"
         for attempt in range(max_tries):
 
             rpc_proc = subprocess.Popen(
@@ -126,15 +125,16 @@ class ImageManager:
             while time.time() - start_time < wait_time:
                 time.sleep(1)
                 ret = rpc_proc.poll()
-               # process has terminated
+                # process has terminated
                 if ret is not None:
-                   stderr = rpc_proc.stderr.read()
-                   if "address already in use" in stderr:
-                       raise AddressAlreadyInUse("Port {port} is already used by a different service".format(port=port))
-                   raise OIIInspectorError("Command {cmd} has failed with error {stderr}"
-                                           .format(cmd="".join(cmd), stderr=stderr))
+                    stderr = rpc_proc.stderr.read()
+                    if "address already in use" in stderr:
+                        raise AddressAlreadyInUse(
+                            "Port {port} is already used by a different service".format(port=port))
+                    raise OIIInspectorError("Command {cmd} has failed with error {stderr}"
+                                            .format(cmd="".join(cmd), stderr=stderr))
 
-               # query the service to see if it has started
+                # query the service to see if it has started
                 try:
                     output = run_cmd("grpcurl -plaintext localhost:{port} list api.Registry".format(port=port))
                 except OIIInspectorError:
@@ -148,4 +148,4 @@ class ImageManager:
             rpc_proc.kill()
 
         raise OIIInspectorError("Index registry has not been initialized after {max_tries} tries"
-                            .format(max_tries=max_tries))
+                                .format(max_tries=max_tries))
