@@ -9,7 +9,6 @@ class OIIIClient:
 
     def get_bundle(self, image_address, pkg_name, channel_name, csv_name):
         image_manager = ImageManager.ImageManager()
-        print(image_manager)
         image_manager.start_image(image_address)
         local_image_address = image_manager.get_local_address_of_image()
         call_argument = f"\'{{\"pkgName\":\"{pkg_name}\", " \
