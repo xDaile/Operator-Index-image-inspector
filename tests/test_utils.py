@@ -145,7 +145,7 @@ def test_parser_arg_not_required():
     }
 
     parser = setup_arg_parser(args)
-    parser.parse_args(['--arg1', 'True'])
+    parser.parse_args(['--arg1', 'test'])
     parser.parse_args([])
     with pytest.raises(SystemExit):
         parser.parse_args(['--arg1'])
