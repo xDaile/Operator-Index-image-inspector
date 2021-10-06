@@ -1,4 +1,3 @@
-import json
 from unittest.mock import patch
 import OIIInspector.OIIIClient as OIIIClient
 
@@ -123,6 +122,7 @@ def test_get_default_bundle_that_provides(mock_run_cmd, mock_image_manager):
     assert output["csvName"] == "test-operator.v8.2.0"
     assert output["providedApis"][4]["plural"] == "caches"
     assert output["object"][5]["kind"] == "CustomResourceDefinition"
+
 
 def check_image_manager_calls(mocked_image_manager):
     # mocked_image_manager.assert_called_once()

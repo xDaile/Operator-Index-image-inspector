@@ -1,10 +1,10 @@
 import argparse
 import subprocess
-import logging
 import shlex
 import logging
 import json
 import re
+
 
 def setup_arg_parser(args):
     """
