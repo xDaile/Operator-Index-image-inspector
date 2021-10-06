@@ -1,13 +1,13 @@
 import sys
 import pytest
-import mock
+from unittest.mock import patch
 from OIIInspector import OIIInspector_calls
 
 input_file_name = "./tests/data/{test_name}"
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.get_bundle", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.get_bundle", return_value="Client-response")
+@patch("json.dump")
 def test_get_bundle_main(mock_json_dump, mock_get_bundle):
     test_args = ["name",
                  '--address', 'test-address:1',
@@ -33,8 +33,8 @@ def test_get_bundle_main_ends_without_args():
         OIIInspector_calls.get_bundle_main()
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.list_packages", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.list_packages", return_value="Client-response")
+@patch("json.dump")
 def test_list_packages_main(mock_json_dump, mock_list_packages):
     test_args = ["name",
                  '--address', 'test-address:1']
@@ -54,8 +54,8 @@ def test_list_packages_main_ends_without_args():
         OIIInspector_calls.list_packages_main()
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.list_bundles", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.list_bundles", return_value="Client-response")
+@patch("json.dump")
 def test_list_bundles_main(mock_json_dump, mock_list_bundles):
     test_args = ["name",
                  '--address', 'test-address:1']
@@ -75,8 +75,8 @@ def test_list_bundles_main_ends_without_args():
         OIIInspector_calls.list_bundles_main()
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.get_package", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.get_package", return_value="Client-response")
+@patch("json.dump")
 def test_get_package_main(mock_json_dump, mock_get_package):
     test_args = ["name",
                  '--address', 'test-address:1',
@@ -97,8 +97,8 @@ def test_get_package_dump_ends_without_args():
         OIIInspector_calls.get_package_main()
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.get_bundle_for_channel", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.get_bundle_for_channel", return_value="Client-response")
+@patch("json.dump")
 def test_get_bundle_for_channel_main(mock_json_dump, mock_get_bundle_for_channel):
     test_args = ["name",
                  '--address', 'test-address:1',
@@ -120,8 +120,8 @@ def test_get_bundle_for_channel_dump_ends_without_args():
         OIIInspector_calls.get_bundle_for_channel_main()
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.get_bundle_that_replaces", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.get_bundle_that_replaces", return_value="Client-response")
+@patch("json.dump")
 def test_get_bundle_that_replaces_main(mock_json_dump, mock_get_bundle_that_replaces):
     test_args = ["name",
                  '--address', 'test-address:1',
@@ -147,8 +147,8 @@ def test_get_bundle_that_replaces_dump_ends_without_args():
         OIIInspector_calls.get_bundle_that_replaces_main()
 
 
-@mock.patch("OIIInspector.OIIIClient.OIIIClient.get_default_bundle_that_provides", return_value="Client-response")
-@mock.patch("json.dump")
+@patch("OIIInspector.OIIIClient.OIIIClient.get_default_bundle_that_provides", return_value="Client-response")
+@patch("json.dump")
 def test_get_default_bundle_that_provides_main(mock_json_dump, mock_get_default_bundle_that_provides):
     test_args = ["name",
                  '--address', 'test-address:1',
