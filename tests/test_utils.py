@@ -19,23 +19,23 @@ def load_and_convert_file(file_name):
     return convert_output(input_data)
 
 
-@patch("subprocess.Popen")
+@patch("OIIInspector.utils.subprocess.Popen")
 def test_run_cmd_pass(mocked_popen):
     mock_process.returncode = 0
     mocked_popen.return_value = mock_process
     output = run_cmd("ls")
     assert output == "success"
-    mocked_popen.assert_called_once_with(["ls"], stdout=-1)
+    mocked_popen.assert_called_once_with(["ls"], stdout=-1, stderr=-1)
 
 
-@patch("subprocess.Popen")
+@patch("OIIInspector.utils.subprocess.Popen")
 def test_run_cmd_fail(mocked_popen):
     mock_process.returncode = 1
     mocked_popen.return_value = mock_process
     with pytest.raises(RuntimeError):
         output = run_cmd("ls")
         assert output == "success"
-    mocked_popen.assert_called_once_with(["ls"], stdout=-1)
+    mocked_popen.assert_called_once_with(["ls"], stdout=-1, stderr=-1)
 
 
 def test_convert_output_combined():
@@ -145,7 +145,7 @@ def test_parser_arg_not_required():
     }
 
     parser = setup_arg_parser(args)
-    parser.parse_args(['--arg1', 'True'])
+    parser.parse_args(['--arg1', 'test'])
     parser.parse_args([])
     with pytest.raises(SystemExit):
         parser.parse_args(['--arg1'])
@@ -205,7 +205,6 @@ def test_parser_default():
     parser = setup_arg_parser(args)
     parser.parse_args(["--arg1", "-1502"])
     parsed_args = parser.parse_args([])
-    print(parsed_args)
     assert parsed_args.arg1 == 1
 
 

@@ -2,7 +2,15 @@ import json
 import sys
 
 from OIIInspector.utils import setup_arg_parser
-from OIIInspector.OIIIClient import OIIIClient
+from OIIInspector.oii_client import (
+    get_bundle,
+    list_packages,
+    list_bundles,
+    get_package,
+    get_bundle_for_channel,
+    get_bundle_that_replaces,
+    get_default_bundle_that_provides
+)
 
 ADDRESS_ARG = {("--address",): {
     "help": "Address of the index image",
@@ -83,8 +91,7 @@ def get_bundle_main(sysargs=None):
         args = parser.parse_args(sysargs[1:])
     else:
         args = parser.parse_args()  # pragma: no cover"
-    oiii_client = OIIIClient()
-    resp = oiii_client.get_bundle(args.address, args.package_name, args.channel_name, args.csv_name)
+    resp = get_bundle(args.address, args.package_name, args.channel_name, args.csv_name)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
@@ -96,21 +103,18 @@ def list_packages_main(sysargs=None):
         JSON object with list of packages in the image.
     """
     parser = setup_arg_parser(LIST_PACKAGES_ARGS)
-
     if sysargs:
         args = parser.parse_args(sysargs[1:])
     else:
         args = parser.parse_args()  # pragma: no cover"
-
-    oiii_client = OIIIClient()
-    resp = oiii_client.list_packages(args.address)
+    resp = list_packages(args.address)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
 
 def list_bundles_main(sysargs=None):
     """
-    Entrypoint for getting metainfo about bundles in the image.
+    Entrypoint for getting data about bundles in the image.
     Returns:
         JSON object with info about bundles in the image.
     """
@@ -121,8 +125,7 @@ def list_bundles_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = OIIIClient()
-    resp = oiii_client.list_bundles(args.address)
+    resp = list_bundles(args.address)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
@@ -140,8 +143,7 @@ def get_package_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = OIIIClient()
-    resp = oiii_client.get_package(args.address, args.package_name)
+    resp = get_package(args.address, args.package_name)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
@@ -159,8 +161,7 @@ def get_bundle_for_channel_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = OIIIClient()
-    resp = oiii_client.get_bundle_for_channel(args.address, args.package_name, args.channel_name)
+    resp = get_bundle_for_channel(args.address, args.package_name, args.channel_name)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
@@ -178,8 +179,7 @@ def get_bundle_that_replaces_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = OIIIClient()
-    resp = oiii_client.get_bundle_that_replaces(args.address, args.package_name, args.channel_name, args.csv_name)
+    resp = get_bundle_that_replaces(args.address, args.package_name, args.channel_name, args.csv_name)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
@@ -197,8 +197,7 @@ def get_default_bundle_that_provides_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    oiii_client = OIIIClient()
-    resp = oiii_client.get_default_bundle_that_provides(args.address, args.group, args.version,
-                                                        args.kind, args.plural)
+    resp = get_default_bundle_that_provides(args.address, args.group, args.version,
+                                            args.kind, args.plural)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
