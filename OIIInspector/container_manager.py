@@ -18,6 +18,10 @@ class ContainerManager:
     _grpc_init_wait_time = 3
     _base_container_name = "OIIInspector_running_container"
 
+    @property
+    def local_address_of_image(self):
+        return self._get_local_address_of_image()
+
     def __init__(self, image_address):
         """
         Initialize the ContainerManager
@@ -28,22 +32,15 @@ class ContainerManager:
         self._port = self._grpc_start_port
         self._rpc_proc = None
         self._image_address = image_address
-        self._container_status = False
         self._container_platform = None
+        self._container_running = False
+        self._container_pulled = False
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.close_container_manager()
-
-    @property
-    def container_status(self):
-        return self._container_status
-
-    @container_status.setter
-    def container_status(self, value):
-        self._container_status = value
 
     def start_container(self):
         """
@@ -52,21 +49,24 @@ class ContainerManager:
         """
         # pull is done separately, instead of running just {platform} run command (which can pull image too),
         # because of better container control
-
+        if self._container_running is True:
+            return
         if self._container_platform is None:
             self._get_container_platform()
-        self._pull_image()
+        if self._container_pulled is False:
+            self._pull_image()
+            self._container_pulled = True
         self._port, self._rpc_proc = self._serve_index_registry()
-        self.container_status = True
+        self._container_running = True
 
-    def get_local_address_of_image(self) -> str:
+    def _get_local_address_of_image(self) -> str:
         """
         Get local address of the running image
 
         :return: Returns local address where image is running in format localhost:PORT
         :rtype: str
         """
-        if self.container_status is False:
+        if self._container_running is False:
             raise (exceptions.OIIInspectorError("Image is not running"))
         return f"localhost:{self._port}"
 
@@ -74,24 +74,27 @@ class ContainerManager:
         """
         Close running container and remove used image
         """
-        if self.container_status is True:
+        if self._container_running is True:
             self._rpc_proc.kill()
             self._stop_container()
-            self.container_status = False
-        self._remove_container()
+            self._container_running = False
+        if self._container_pulled is True:
+            self._remove_container()
+            self._container_pulled = False
 
     def _get_container_platform(self):
         """
         Search for available container platform
         """
-        docker_terminal_result = run_cmd("command -v docker")
-        podman_terminal_result = run_cmd("command -v podman")
-        if "/podman" in podman_terminal_result:
-            self._container_platform = "podman"
-        elif "/docker" in docker_terminal_result:
-            self._container_platform = "docker"
-        else:
-            raise exceptions.OIIInspectorError("Docker or Podman is needed to be installed on the platform")
+        if self._container_platform is None:
+            docker_terminal_result = run_cmd("command -v docker")
+            podman_terminal_result = run_cmd("command -v podman")
+            if "/podman" in podman_terminal_result:
+                self._container_platform = "podman"
+            elif "/docker" in docker_terminal_result:
+                self._container_platform = "docker"
+            else:
+                raise exceptions.OIIInspectorError("Docker or Podman is needed to be installed on the platform")
 
     def _stop_container(self, tolerate_err=False):
         """

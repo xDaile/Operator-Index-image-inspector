@@ -9,8 +9,9 @@ import retry.api
 @patch("OIIInspector.container_manager.subprocess")
 @patch("OIIInspector.container_manager.run_cmd",
        side_effect=["", "/usr/bin/podman", "pull-result", "api.Registry.ListPackages", "stop-result", "remove-result",
-                    "/usr/bin/docker", "", "pull-result", "api.Registry.ListPackages", "stop-result", "remove-result"])
-def test_platform_check(mock_run_cmd, mock_subprocess, ):
+                    "/usr/bin/docker", "", "pull-result", "api.Registry.ListPackages", "stop-result", "remove-result",
+                    "pull-result", "api.Registry.ListPackages", "stop-result", "remove-result"])
+def test_platform_check(mock_run_cmd, mock_subprocess):
     mock_subprocess.Popen.return_value.poll.return_value = None
     with container_manager.ContainerManager("test") as image_manager_instance:
         image_manager_instance.start_container()
@@ -23,6 +24,14 @@ def test_platform_check(mock_run_cmd, mock_subprocess, ):
     assert call("command -v podman") in mock_run_cmd.call_args_list
     assert call("command -v docker") in mock_run_cmd.call_args_list
     assert image_manager_instance._container_platform == "docker"
+
+    mock_run_cmd.reset_mock()
+    with container_manager.ContainerManager("test") as image_manager_instance:
+        image_manager_instance._container_platform = "podman"
+        image_manager_instance.start_container()
+    assert call("command -v podman") not in mock_run_cmd.call_args_list
+    assert call("command -v docker") not in mock_run_cmd.call_args_list
+    assert call("podman pull test") in mock_run_cmd.call_args_list
 
 
 @patch("OIIInspector.container_manager.run_cmd")
@@ -64,10 +73,10 @@ def test_get_address_before_running(mock_run_cmd, mock_subprocess):
     mock_subprocess.Popen.return_value.poll.return_value = None
     with pytest.raises(exceptions.OIIInspectorError):
         with container_manager.ContainerManager("test") as image_manager_instance:
-            image_manager_instance.get_local_address_of_image()
+            image_manager_instance.local_address_of_image
     # This _image_is_running variable is set to True only if container is running
-    image_manager_instance.container_status = True
-    assert image_manager_instance.get_local_address_of_image() == "localhost:50051"
+    image_manager_instance._container_running = True
+    assert image_manager_instance.local_address_of_image == "localhost:50051"
 
 
 @patch("OIIInspector.container_manager.time")
@@ -170,13 +179,23 @@ def test_grpcurl_query_failed_recovery(mock_run_cmd, mock_subprocess):
     assert mock_run_cmd.call_count == 7
 
 
+@patch("OIIInspector.container_manager.subprocess")
 @patch("OIIInspector.container_manager.run_cmd",
-       side_effect=["", "/usr/bin/podman", "pull-result",
-                    "api.Registry.ListBundles", "stop-result", "remove-result"])
-def test_container_status(mock_run_cmd):
-    with container_manager.ContainerManager("test_address") as image_manager_instance:
+       side_effect=[ "stop-result", "remove-result"])
+def test_already_running_container_will_not_start(mock_run_cmd, mock_subprocess):
+    mock_subprocess.Popen.return_value.poll.return_value = None
+    with container_manager.ContainerManager("test") as image_manager_instance:
+        image_manager_instance._container_running = True
         image_manager_instance.start_container()
-        assert image_manager_instance.container_status is True
-        image_manager_instance.container_status = False
-        assert image_manager_instance.container_status is False
-        image_manager_instance.container_status = True
+        # set value back to actual state, because of close method called by context manager
+        image_manager_instance._container_running = False
+    assert mock_run_cmd.call_count == 0
+
+@patch("OIIInspector.container_manager.subprocess")
+@patch("OIIInspector.container_manager.run_cmd",
+       side_effect=["", "/usr/bin/podman", "pull-result", "api.Registry.ListPackages", "stop-result", "remove-result"])
+def test_close_manager_without_pull(mock_run_cmd, mock_subprocess):
+    mock_subprocess.Popen.return_value.poll.return_value = None
+    with container_manager.ContainerManager("test") as image_manager_instance:
+        image_manager_instance._container_pulled = False
+    assert mock_run_cmd.call_count == 0

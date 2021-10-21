@@ -66,7 +66,7 @@ def use_container_manager(image_address, api_address, call_argument=None):
         local_image_address = image_manager.get_local_address_of_image()
         if call_argument is None:
             command_to_call = f"grpcurl -plaintext {local_image_address} api.Registry/{api_address}"
-        if call_argument is not None:
+        else:
             command_to_call = f"grpcurl -plaintext -d {call_argument} {local_image_address} api.Registry/{api_address}"
 
         result = run_cmd(command_to_call)
