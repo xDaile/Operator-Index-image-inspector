@@ -1,1 +1,7 @@
 OIIInspector/__pycache__
+.coverage
+.idea/
+OIIInspector/grpCurl
+htmlcov/
+tests/__pycache__
+venv
