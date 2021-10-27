@@ -82,9 +82,10 @@ GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS[("--plural",)] = {
 
 def get_bundle_main(sysargs=None):
     """
-    Entrypoint for getting bundle metadata.
-    Returns:
-        JSON object with data about specified bundle image.
+    Entrypoint for getting bundle
+
+    :returns: JSON string with bundle.
+    :rtype: str
     """
     parser = setup_arg_parser(GET_BUNDLE_ARGS)
     if sysargs:
@@ -98,9 +99,10 @@ def get_bundle_main(sysargs=None):
 
 def list_packages_main(sysargs=None):
     """
-    Entrypoint for getting list of packages in index image.
-    Returns:
-        JSON object with list of packages in the image.
+    Entrypoint for getting list of packages in the image.
+
+    :returns: JSON string with list of packages
+    :rtype: str
     """
     parser = setup_arg_parser(LIST_PACKAGES_ARGS)
     if sysargs:
@@ -114,9 +116,10 @@ def list_packages_main(sysargs=None):
 
 def list_bundles_main(sysargs=None):
     """
-    Entrypoint for getting data about bundles in the image.
-    Returns:
-        JSON object with info about bundles in the image.
+    Entrypoint for getting list of bundles in the image.
+
+    :returns: JSON string with list of bundles.
+    :rtype: str
     """
     parser = setup_arg_parser(LIST_BUNDLES_ARGS)
 
@@ -132,9 +135,10 @@ def list_bundles_main(sysargs=None):
 
 def get_package_main(sysargs=None):
     """
-    Entrypoint for getting metadata about package.
-    Returns:
-        JSON object with metadata about package.
+    Entrypoint for getting package metadata.
+
+    :returns: JSON string with package metadata.
+    :rtype: str
     """
     parser = setup_arg_parser(GET_PACKAGE_ARGS)
 
@@ -150,9 +154,10 @@ def get_package_main(sysargs=None):
 
 def get_bundle_for_channel_main(sysargs=None):
     """
-    Entrypoint for getting metadata about bundle image for desired channel.
-    Returns:
-        JSON object with metadata about bundle.
+    Entrypoint for getting bundle metadata for desired channel.
+
+    :returns: JSON string with bundle metadata.
+    :rtype: str
     """
     parser = setup_arg_parser(GET_BUNDLE_FOR_CHANNEL_ARGS)
 
@@ -168,9 +173,10 @@ def get_bundle_for_channel_main(sysargs=None):
 
 def get_bundle_that_replaces_main(sysargs=None):
     """
-    Entrypoint for getting metadata about bundle image that replaces specified image.
-    Returns:
-        JSON object with metadata about image.
+    Entrypoint for getting bundle metadata that replaces specified image.
+
+    :returns: JSON string with image metadata.
+    :rtype: str
     """
     parser = setup_arg_parser(GET_BUNDLE_THAT_REPLACES_ARGS)
 
@@ -186,10 +192,11 @@ def get_bundle_that_replaces_main(sysargs=None):
 
 def get_default_bundle_that_provides_main(sysargs=None):
     """
-    Entrypoint for getting metadata about image that provides image defined by group, version,
+    Entrypoint for getting bundle metadata that provides image defined by group, version,
     kind and plural.
-    Returns:
-        JSON object with metadata about bundle image.
+
+    :returns: JSON string with bundle image metadata.
+    :rtype: str
     """
     parser = setup_arg_parser(GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS)
     if sysargs:
