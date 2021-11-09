@@ -9,6 +9,7 @@ import re
 def setup_arg_parser(args: dict) -> argparse.ArgumentParser:
     """
     Set up ArgumentParser with the provided arguments.
+
     :param args: Dictionary of argument aliases and options to be consumed by ArgumentParser.
     :type args: (dict)
     :return: Configured instance of ArgumentParser.
@@ -57,40 +58,41 @@ def run_cmd(cmd: str, err_msg: str = None, tolerate_err: bool = False) -> (str, 
     """
     log = logging.getLogger("OIIInspector")
     err_msg = err_msg or "An error has occurred when executing a command."
-    p = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(
+        shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
     out, err = p.communicate()
     if p.returncode != 0 and not tolerate_err:
         log.error(f"Command {cmd} failed with {err}")
         raise RuntimeError(err_msg)
 
-    return out.decode('utf-8')
+    return out.decode("utf-8")
 
 
-def convert_output(api_response: str) -> str:
+def convert_output(api_response: str) -> dict:
     """
-    Converts answer from API into JSON
+    Convert answer from API into JSON.
 
     :param api_response: String received from grpcurl call on api.Registry
     :type api_response: str
     :return: JSON-object that is possible to convert into string.
     :rtype: str
     """
-
     log = logging.getLogger("OIIInspector")
     if api_response == "":
         log.error("Answer from API is empty")
         raise RuntimeError("Answer from API is empty")
 
-    api_response = re.sub(r'}\s*{', "} ,{", api_response)
+    api_response = re.sub(r"}\s*{", "} ,{", api_response)
     json_data = json.loads(api_response)
-    if 'csvJson' in json_data:
-        json_data['csvJson'] = json.loads(json_data['csvJson'])
+    if "csvJson" in json_data:
+        json_data["csvJson"] = json.loads(json_data["csvJson"])
 
-    if 'object' in json_data:
+    if "object" in json_data:
         new_object = []
-        for item in json_data['object']:
+        for item in json_data["object"]:
             new_object.append(json.loads(item))
-        json_data['object'] = new_object
-    if 'spec' in json_data:
-        json_data['spec'] = json.loads(json_data['spec'])
+        json_data["object"] = new_object
+    if "spec" in json_data:
+        json_data["spec"] = json.loads(json_data["spec"])
     return json_data
