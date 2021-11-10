@@ -1,5 +1,4 @@
 import json
-
 from OIIInspector.utils import run_cmd, convert_output
 from OIIInspector.container_manager import ContainerManager
 

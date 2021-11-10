@@ -20,14 +20,14 @@ def load_file(file_name):
 
 @patch("OIIInspector.oii_client.ContainerManager")
 @patch("OIIInspector.oii_client.run_cmd", return_value=load_file("get_bundle.json"))
-def test_get_bundle(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_get_bundle(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = get_bundle(
         "test_address:50051", "serverless-operator", "4.3", "serverless-operator.v1.2.0"
     )
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext -d "
         '\'{"pkgName":"serverless-operator", '
@@ -42,12 +42,12 @@ def test_get_bundle(mock_run_cmd, mock_img_manager):
 
 @patch("OIIInspector.oii_client.ContainerManager")
 @patch("OIIInspector.oii_client.run_cmd", return_value=load_file("list_packages.json"))
-def test_list_packages(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_list_packages(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = list_packages("test_address:50051")
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext " "test_address:50051 " "api.Registry/ListPackages"
     )
@@ -56,12 +56,12 @@ def test_list_packages(mock_run_cmd, mock_img_manager):
 
 @patch("OIIInspector.oii_client.ContainerManager")
 @patch("OIIInspector.oii_client.run_cmd", return_value=load_file("list_bundles.json"))
-def test_list_bundles(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_list_bundles(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = list_bundles("test_address:50051")
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext test_address:50051 api.Registry/ListBundles"
     )
@@ -73,12 +73,12 @@ def test_list_bundles(mock_run_cmd, mock_img_manager):
 
 @patch("OIIInspector.oii_client.ContainerManager")
 @patch("OIIInspector.oii_client.run_cmd", return_value=load_file("get_package.json"))
-def test_get_package(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_get_package(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = get_package("test_address:50051", "serverless-operator")
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext -d "
         '\'{"name":"serverless-operator"}\' '
@@ -94,12 +94,12 @@ def test_get_package(mock_run_cmd, mock_img_manager):
     "OIIInspector.oii_client.run_cmd",
     return_value=load_file("get_bundle_for_channel.json"),
 )
-def test_get_bundle_for_channel(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_get_bundle_for_channel(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = get_bundle_for_channel("test_address:50051", "submariner", "alpha")
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext -d "
         '\'{"pkgName":"submariner", '
@@ -116,14 +116,14 @@ def test_get_bundle_for_channel(mock_run_cmd, mock_img_manager):
     "OIIInspector.oii_client.run_cmd",
     return_value=load_file("get_bundle_that_replaces.json"),
 )
-def test_get_bundle_that_replaces(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_get_bundle_that_replaces(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = get_bundle_that_replaces(
         "test_address:50051", "submariner", "alpha", "beta"
     )
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext -d "
         '\'{"pkgName":"submariner", '
@@ -141,14 +141,14 @@ def test_get_bundle_that_replaces(mock_run_cmd, mock_img_manager):
     "OIIInspector.oii_client.run_cmd",
     return_value=load_file("get_default_bundle_that_provides.json"),
 )
-def test_get_default_bundle_that_provides(mock_run_cmd, mock_img_manager):
-    mock_img_manager.return_value.__enter__.return_value.local_address_of_image = (
+def test_get_default_bundle_that_provides(mock_run_cmd, mock_container_manager):
+    mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test_address:50051"
     )
     output = get_default_bundle_that_provides(
         "test_address:50051", "testGroup", "testVersion", "testKind", "testPlural"
     )
-    check_container_manager_calls(mock_img_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext -d '{"
         '"group":"testGroup", '
@@ -163,15 +163,15 @@ def test_get_default_bundle_that_provides(mock_run_cmd, mock_img_manager):
     assert output["object"][5]["kind"] == "CustomResourceDefinition"
 
 
-@patch("OIIInspector.oii_client.run_cmd", return_value="result")
 @patch("OIIInspector.oii_client.ContainerManager")
-def test_use_container_manager(mock_container_manager, mock_run_cmd):
+@patch("OIIInspector.oii_client.run_cmd", return_value="result")
+def test_use_container_manager(mock_run_cmd, mock_container_manager):
     mock_container_manager.return_value.__enter__.return_value.local_address_of_image = (
         "test-local-addr"
     )
     result = use_container_manager("test_address:50051", "test-api-address")
     assert result == "result"
-    check_container_manager_calls(mock_container_manager)
+    mock_container_manager.assert_called_once_with("test_address:50051")
     mock_run_cmd.assert_called_once_with(
         "grpcurl -plaintext " "test-local-addr " "api.Registry/test-api-address"
     )
@@ -185,8 +185,3 @@ def test_use_container_manager(mock_container_manager, mock_run_cmd):
         "test-local-addr "
         "api.Registry/test-api-address"
     )
-
-
-def check_container_manager_calls(mock_container_manager):
-    mock_container_manager.return_value.__enter__.return_value.call_count == 1
-    mock_container_manager.assert_called_once_with("test_address:50051")
