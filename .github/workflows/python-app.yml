@@ -74,8 +74,12 @@ jobs:
         run: pip install tox
       - name: Run Tox
         run: tox -e py39
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+      - name: Codecov
+        uses: codecov/codecov-action@v2.1.0
         with:
           fail_ci_if_error: true
           verbose: true
+          directory: ./coverage/reports/
+          files: ./coverage.xml
+          name: codecov-umbrella
+          path_to_wirte_report: ./coverage/codecov_report.txt
