@@ -27,9 +27,6 @@ class Tox(TestCommand):
 
 
 def get_requirements():
-    # if sys.version_info[0] == 2:
-    #     filename = "requirements-py26.txt"
-    # else:
     filename = "requirements.txt"
     with open(filename) as f:
         reqs = f.read().splitlines()
