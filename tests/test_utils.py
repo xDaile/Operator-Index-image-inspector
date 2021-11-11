@@ -9,7 +9,7 @@ CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT = 4
 CONVERT_OUTPUT_CSVJSON_OBJECTS_COUNT = 4
 CONVERT_OUTPUT_OBJECT_LIST_OBJECTS_COUNT = 9
 mock_process = MagicMock()
-mock_process.communicate.return_value = ["success".encode("utf-8"), 0]
+mock_process.communicate.return_value = ["success".encode('utf-8'), 0]
 
 
 def load_and_convert_file(file_name):
@@ -41,30 +41,30 @@ def test_run_cmd_fail(mocked_popen):
 def test_convert_output_combined():
 
     converted_input = load_and_convert_file("convert_output_combined.json")
-    assert "csvJson" in converted_input
-    assert "spec" in converted_input
-    assert "object" in converted_input
-    assert len(converted_input["csvJson"]) == CONVERT_OUTPUT_CSVJSON_OBJECTS_COUNT
-    assert len(converted_input["object"]) == CONVERT_OUTPUT_OBJECT_LIST_OBJECTS_COUNT
-    assert len(converted_input["spec"]) == CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT
+    assert 'csvJson' in converted_input
+    assert 'spec' in converted_input
+    assert 'object' in converted_input
+    assert len(converted_input['csvJson']) == CONVERT_OUTPUT_CSVJSON_OBJECTS_COUNT
+    assert len(converted_input['object']) == CONVERT_OUTPUT_OBJECT_LIST_OBJECTS_COUNT
+    assert len(converted_input['spec']) == CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT
 
 
 def test_convert_output_csvjson():
     converted_input = load_and_convert_file("convert_output_csvjson.json")
-    assert "csvJson" in converted_input
-    assert len(converted_input["csvJson"]) == CONVERT_OUTPUT_CSVJSON_OBJECTS_COUNT
+    assert 'csvJson' in converted_input
+    assert len(converted_input['csvJson']) == CONVERT_OUTPUT_CSVJSON_OBJECTS_COUNT
 
 
 def test_convert_output_object_list():
     converted_input = load_and_convert_file("convert_output_object_list.json")
-    assert "object" in converted_input
-    assert len(converted_input["object"]) == CONVERT_OUTPUT_OBJECT_LIST_OBJECTS_COUNT
+    assert 'object' in converted_input
+    assert len(converted_input['object']) == CONVERT_OUTPUT_OBJECT_LIST_OBJECTS_COUNT
 
 
 def test_convert_output_spec():
     converted_input = load_and_convert_file("convert_output_spec.json")
-    assert "spec" in converted_input
-    assert len(converted_input["spec"]) == CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT
+    assert 'spec' in converted_input
+    assert len(converted_input['spec']) == CONVERT_OUTPUT_SPEC_JSON_OBJECTS_COUNT
 
 
 def test_convert_output_empty_input():
@@ -106,7 +106,7 @@ def test_parser_arg_groups(capsys):
             "help": "Argument 4",
             "required": True,
             "type": bool,
-        },
+        }
     }
 
     parser = setup_arg_parser(args)
@@ -129,7 +129,7 @@ def test_parser_arg_required():
 
     parser = setup_arg_parser(args)
     with pytest.raises(SystemExit):
-        parser.parse_args(["--arg2"])
+        parser.parse_args(['--arg2'])
     with pytest.raises(SystemExit):
         parser.parse_args([])
 
@@ -145,10 +145,10 @@ def test_parser_arg_not_required():
     }
 
     parser = setup_arg_parser(args)
-    parser.parse_args(["--arg1", "test"])
+    parser.parse_args(['--arg1', 'test'])
     parser.parse_args([])
     with pytest.raises(SystemExit):
-        parser.parse_args(["--arg1"])
+        parser.parse_args(['--arg1'])
 
 
 def test_parser_help(capsys):
@@ -164,7 +164,7 @@ def test_parser_help(capsys):
             "help": "Argument 2",
             "required": True,
             "type": str,
-        },
+        }
     }
 
     parser = setup_arg_parser(args)

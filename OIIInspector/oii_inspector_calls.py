@@ -9,16 +9,14 @@ from OIIInspector.oii_client import (
     get_package,
     get_bundle_for_channel,
     get_bundle_that_replaces,
-    get_default_bundle_that_provides,
+    get_default_bundle_that_provides
 )
 
-ADDRESS_ARG = {
-    ("--address",): {
-        "help": "Address of the index image",
-        "required": True,
-        "type": str,
-    }
-}
+ADDRESS_ARG = {("--address",): {
+    "help": "Address of the index image",
+    "required": True,
+    "type": str,
+}}
 
 PKG_NAME_ARG = {
     "help": "Name of the desired package",
@@ -84,7 +82,7 @@ GET_DEFAULT_BUNDLE_THAT_PROVIDES_ARGS[("--plural",)] = {
 
 def get_bundle_main(sysargs=None):
     """
-    Entrypoint for getting bundle.
+    Entrypoint for getting bundle
 
     :returns: JSON string with bundle.
     :rtype: str
@@ -187,16 +185,15 @@ def get_bundle_that_replaces_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    resp = get_bundle_that_replaces(
-        args.address, args.package_name, args.channel_name, args.csv_name
-    )
+    resp = get_bundle_that_replaces(args.address, args.package_name, args.channel_name, args.csv_name)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
 
 
 def get_default_bundle_that_provides_main(sysargs=None):
     """
-    Entrypoint for getting bundle metadata that provides image defined by group, version, kind and plural.
+    Entrypoint for getting bundle metadata that provides image defined by group, version,
+    kind and plural.
 
     :returns: JSON string with bundle image metadata.
     :rtype: str
@@ -207,8 +204,7 @@ def get_default_bundle_that_provides_main(sysargs=None):
     else:
         args = parser.parse_args()  # pragma: no cover"
 
-    resp = get_default_bundle_that_provides(
-        args.address, args.group, args.version, args.kind, args.plural
-    )
+    resp = get_default_bundle_that_provides(args.address, args.group, args.version,
+                                            args.kind, args.plural)
     json.dump(resp, sys.stdout, sort_keys=True, indent=4, separators=(",", ": "))
     return resp
