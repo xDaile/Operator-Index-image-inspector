@@ -1,7 +1,14 @@
 OIIInspector/__pycache__
-.coverage
-.idea/
 OIIInspector/grpCurl
+OIIInspector.egg-info
+.idea/
 htmlcov/
 tests/__pycache__
 venv
+.tox/
+build
+dist/
+.coverage
+coverage.xml
+Makefile
+

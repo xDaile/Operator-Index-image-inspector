@@ -3,12 +3,12 @@ class AddressAlreadyInUse(Exception):
 
 
 class OIIInspectorError(Exception):
-    """An error was encountered in OIIInspector"""
+    """An error was encountered in OIIInspector."""
 
 
 class MissingContainerPlatform(Exception):
-    """Docker nor Podman is not present at the current platform"""
+    """Docker nor Podman is not present at the current platform."""
 
 
 class NoFreePortFound(Exception):
-    """All available ports are already taken"""
+    """All available ports are already taken."""
