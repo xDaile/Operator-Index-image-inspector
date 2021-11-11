@@ -56,7 +56,6 @@ setup(
         ]
 
     },
-    include_package_data=True,
     install_requires=get_requirements(),
     tests_require=["tox"],
     cmdclass={"test": Tox}
