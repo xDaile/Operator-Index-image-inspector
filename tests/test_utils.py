@@ -39,7 +39,6 @@ def test_run_cmd_fail(mocked_popen):
 
 
 def test_convert_output_combined():
-
     converted_input = load_and_convert_file("convert_output_combined.json")
     assert "csvJson" in converted_input
     assert "spec" in converted_input

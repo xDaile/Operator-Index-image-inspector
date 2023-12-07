@@ -45,7 +45,7 @@ setup(
 
     entry_points={
         "console_scripts": [
-            "OIIInspector-get_bundle = OIIInspector.oii_inspector_calls:get_bundle_main",
+            "OIIInspector-get-bundle = OIIInspector.oii_inspector_calls:get_bundle_main",
             "OIIInspector-list-packages = OIIInspector.oii_inspector_calls:list_packages_main",
             "OIIInspector-list-bundles = OIIInspector.oii_inspector_calls:list_bundles_main",
             "OIIInspector-get-package = OIIInspector.oii_inspector_calls:get_package_main",
